@@ -1,5 +1,7 @@
 import hashlib
 from tabulate import tabulate
+import bcrypt
+
 
 # Convert the string to bytes because the library does not support hashing strings
 
@@ -31,6 +33,11 @@ dk = hashlib.pbkdf2_hmac('sha256', string_to_hash, salt, 100000)
 hash_digest = dk.hex()
 hash_digest_length = len(hash_digest)
 hash_results_list.append(['sha256 (pbkdf2)', hash_digest_length, 'Y', hash_digest])
+
+# calculate the salted digest using bcrypt
+hash_digest = bcrypt.hashpw(string_to_hash, bcrypt.gensalt())
+hash_digest_length = len(hash_digest)
+hash_results_list.append(['bcrypt', hash_digest_length, 'Y', hash_digest])
 
 hash_results_list.sort()
 
